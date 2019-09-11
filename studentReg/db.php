@@ -2,18 +2,19 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "studentreg";
+$dbname = "studentreg"; // Database name
+$tbname = "students"; // Table name
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password); // Create connection
 
-$sql = "CREATE DATABASE " . $dbname;
+$sql = "CREATE DATABASE " . $dbname; // create database sql
 $conn->query($sql); // Create Database
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname); // connect to database
 
+// create table sql
 //may underscore kasi reserved yung words na address, status
-$sql = "CREATE TABLE students (
+$sql = "CREATE TABLE " . $tbname . " (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 firstname VARCHAR(50) NOT NULL,
 middlename VARCHAR(50) NOT NULL,

@@ -60,6 +60,10 @@ select {
   border-radius: 2px;
 }
 
+.savebtn {
+  display: none;
+}
+
 button {
   padding: 19px 39px 18px 39px;
   color: #FFF;
@@ -128,6 +132,11 @@ label.light {
   font-size: 30px;
   margin-bottom: 20px;
   display: block;
+}
+
+span #balance{
+  display: inline-block;
+  width: auto;
 }
 
 /* Css of modal */

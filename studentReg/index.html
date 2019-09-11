@@ -23,8 +23,8 @@
         <input type="text" id="LName" >
 
         <label>Sex:</label>
-        <input type="radio" id="sex_m" value="Male" name="user_sex" ><label for="male" class="light">Male</label><br>
-        <input type="radio" id="sex_f" value="Female" name="user_sex" ><label for="female" class="light">Female</label>
+        <input type="radio" id="Male" value="Male" name="user_sex" ><label for="male" class="light">Male</label><br>
+        <input type="radio" id="Female" value="Female" name="user_sex" ><label for="female" class="light">Female</label>
 
         <label>Address:</label>
         <input type="text" id="Address" >
@@ -49,14 +49,14 @@
         <input onkeyup="compute()" type="number" id="units" >
 
         <label> Total Tuition Fee: </label>
-        <span id="total">P 0</span>
+        <span id="total">P <input type="number" id="balance" ></span>
 
     <label>Payment Status:</label>
         <input type="radio" id="paid" value="paid" name="user_PayStatus" ><label for="paid" class="light">PAID</label><br>
         <input type="radio" id="unpaid" value="unpaid" name="user_PayStatus" ><label for="unpaid" class="light">UNPAID</label>
     </fieldset>
     
-    <button type="button" onclick="compute()">Compute Total Tuition Fee</button>
+    <button type="button" class="savebtn" onclick="saveEdit()">Save</button> <!-- Visible only when editing data -->
     <button type="submit" onclick="addStudent()">Register Student</button>
     
     <!-- button for modal -->
