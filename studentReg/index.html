@@ -1,129 +1,202 @@
 <!DOCTYPE html>
-<html >
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Student Registration System</title>
-        <link rel="stylesheet" href="css/normalize.css">
-        <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration System</title>
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
 
-      <form action="index.html" method="post">
-      
-        <h1>Student Registration System</h1>
+<form method="post" onsubmit="return false">
+    <h1>Student Registration System</h1>
+    <fieldset>
+        <legend><span class="number">1</span>Your Basic Information</legend>
+        <label>First Name:</label>
+        <input type="text" id="FName" >
+
+        <label >Middle Name:</label>
+        <input type="text" id="MName" >
         
-        <fieldset>
-          <legend><span class="number">1</span>Your Basic Information</legend>
-          <label>First Name:</label>
-          <input type="text" id="FName">
+        <label>Last Name:</label>
+        <input type="text" id="LName" >
 
-          <label >Middle Name:</label>
-          <input type="text" id="MName">
-          
-          <label>Last Name:</label>
-          <input type="text" id="LName">
+        <label>Sex:</label>
+        <input type="radio" id="sex_m" value="Male" name="user_sex" ><label for="male" class="light">Male</label><br>
+        <input type="radio" id="sex_f" value="Female" name="user_sex" ><label for="female" class="light">Female</label>
 
-          <label>Sex:</label>
-          <input type="radio" id="sex_m" value="male" name="user_sex"><label for="male" class="light">Male</label><br>
-          <input type="radio" id="sex_f" value="female" name="user_sex"><label for="female" class="light">Female</label>
+        <label>Address:</label>
+        <input type="text" id="Address" >
 
-          <label>Address:</label>
-          <input type="text" id="Address">
-
-          <label>Status:</label>
-          <input type="text" id="Status">
-          
-          <label>Birthdate:</label>
-          <input type="text" id="BDay">
-
-          <label>Course:</label>
-          <input type="text" id="course">
-
-
-          <label>Email:</label>
-          <input type="email" id="email">
-          
-
-
-
-          
-
-          
-        </fieldset>
+        <label>Status:</label>
+        <input type="text" id="Status" >
         
-        <fieldset>
-          <legend><span class="number">2</span>Tuition Fee Computation</legend>
-         
-          <label>Number of units to take: </label>
-            <input type="number" id="units">
+        <label>Birthdate:</label>
+        <input type="text" id="BDay" >
 
-          <label> Total Tuition Fee: </label>
-            <textarea id="total"></textarea>
+        <label>Course:</label>
+        <input type="text" id="course" >
 
-
-        <label>Payment Status:</label>
-            <input type="radio" id="paid" value="paid" name="user_PayStatus"><label for="paid" class="light">PAID</label><br>
-            <input type="radio" id="unpaid" value="unpaid" name="user_PayStatus"><label for="unpaid" class="light">UNPAID</label>
-
-        </fieldset>
-        
-        <button type="submit">Compute Total Tuition Fee</button>
-        <button type="submit">Register Student</button>
-
-        
-        
-       <!-- button for modal -->
-            <button id="myBtn">Manage Database</button>
-
-        <!-- modal -->
-        <div id="myModal" class="modal">
-
-        <!-- modalContent -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                    <h2>Manage Database</h2>
-                    <p>Database Table here</p>
-            </div>
-        </div>
+        <label>Email:</label>
+        <input type="email" id="email" >
+    </fieldset>
     
-    <!-- scriptForModal -->
-    <script>
+    <fieldset>
+        <legend><span class="number">2</span>Tuition Fee Computation</legend>
+        
+        <label>Number of units to take: </label>
+        <input onkeyup="compute()" type="number" id="units" >
+
+        <label> Total Tuition Fee: </label>
+        <span id="total">P 0</span>
+
+    <label>Payment Status:</label>
+        <input type="radio" id="paid" value="paid" name="user_PayStatus" ><label for="paid" class="light">PAID</label><br>
+        <input type="radio" id="unpaid" value="unpaid" name="user_PayStatus" ><label for="unpaid" class="light">UNPAID</label>
+    </fieldset>
+    
+    <button type="button" onclick="compute()">Compute Total Tuition Fee</button>
+    <button type="submit" onclick="addStudent()">Register Student</button>
+    
+    <!-- button for modal -->
+    <button type="button" id="myBtn">Manage Database</button>
+
+    <!-- modal -->
+    <div id="myModal" class="modal">
+
+    <!-- modalContent -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Manage Database</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <td>First Name</td>
+                        <td>Middle Name</td>
+                        <td>Last Name</td>
+                        <td>Sex</td>
+                        <td>Address</td>
+                        <td>Status</td>
+                        <td>Birthday</td>
+                        <td>Course</td>
+                        <td>Email</td>
+                        <td>Units</td>
+                        <td>Payment</td>
+                        <td>Balance</td>
+                        <td>Options</td>
+                    </tr>
+                </thead>
+                <tbody id="data">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+<!-- scriptForModal -->
+<script>
+    window.onload = function(){ // Run after everything loads up
+
+        setupDB();
+
+        var units = $("units"),
+        total = $("total"),
+        dbTable = $("dbTable");
+
+
         // Get Modal
-            var modal = document.getElementById("myModal");
+        var modal = $("myModal");
 
         // Get btn to open modal
-            var btn = document.getElementById("myBtn");
+        var btn = $("myBtn");
 
         // Get the <span> to close the modal
-            var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName("close")[0];
 
         // onclick btn then open the modal
-            btn.onclick = function() {
+        btn.onclick = function() {
             modal.style.display = "block";
-            }
+        }
 
         // When the user clicks on <span> (x) it will close the modal
-            span.onclick = function() {
-             modal.style.display = "none";
-            }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
 
         // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
+        window.onclick = function(event) {
             if (event.target == modal) {
-            modal.style.display = "none";
+                getData();
+                modal.style.display = "none";
             }
         }
-    </script>
+        getData();
+    }
 
+    function setupDB() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {};
+        xhttp.open("GET", "db.php", true);
+        xhttp.send();
+    }
 
-     
+    function addStudent() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                //this.responseText
+                alert("Student Added!");
+            }
+        };
+        xhttp.open("GET", "functions.php?type=0&fname="+$("FName").value+"&mname="+$("MName").value+"&lname="+$("LName").value+"&sex="+radio("user_sex")+"&address="+$("Address").value+"&stat="+$("Status").value+"&bday="+$("BDay").value+"&course="+$("course").value+"&email="+$("email").value+"&units="+$("units").value+"&payment="+radio("user_PayStatus")+"&balance="+(units.value * 200), true);
+        xhttp.send();
+        getData();
+    }
 
+    function del(delID) { // Delete Student
+        var r = confirm("Do you want to delete this Student?");
+        if (r == true) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert("Student Deleted!");
+                    data.innerHTML = "";
+                    getData();
+                }
+            };
+            xhttp.open("GET", "functions.php?type=2&id="+delID, true);
+            xhttp.send();
+        }
+    }
 
+    function getData(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                data.innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "functions.php?type=1", true);
+        xhttp.send();
+    }
 
-      </form>
-      
-    </body>
-</html>
+    function compute() {
+        total.innerHTML = "P " + units.value * 200;
+    }
+
+    function $($0){
+        return document.getElementById($0);
+    }
+
+    function radio(radio0){
+        radio0 = document.getElementsByName(radio0);
+        for (var i = 0, length = radio0.length; i < length; i++) {
+            if (radio0[i].checked) {
+                return radio0[i].value;
+                break;
+            }
+        }
+    }
+</script>
+</body>
 </html>
