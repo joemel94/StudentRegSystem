@@ -75,11 +75,19 @@ button {
   margin-bottom: 10px;
 }
 
-button.del {
-  background-color: red;
+button.mini {
   width: auto;
   padding: 3px 5px;
   border: none;
+}
+
+.mini.del {
+  background-color: red;
+  margin-right: 5px;
+}
+
+.mini.edit {
+  background-color: green;
 }
 
 fieldset {

@@ -39,9 +39,9 @@ function show($conn, $tbname){
         // output data of each row
         $dataresult = "";
         while($row = $result->fetch_assoc()) {
-            $dataresult .= "<tr name='" . $row["id"] . "'>";
+            $dataresult .= "<tr name='data" . $row["id"] . "'>";
             $dataresult .= "<td>" . $row["firstname"] . "</td><td>" . $row["middlename"] . "</td><td>" . $row["lastname"] . "</td><td>" . $row["sex"] . "</td><td>" . $row["_address"] . "</td><td>" . $row["_status"] . "</td><td>" . $row["bday"] . "</td><td>" . $row["course"] . "</td><td>" . $row["email"] . "</td><td>" . $row["units"] . "</td><td>" . $row["payment"] . "</td><td>" . $row["balance"] . "</td>";
-            $dataresult .= "<td><button class='del' onclick='del(" . $row["id"] . ")'>X</button></td>";
+            $dataresult .= "<td><button class='mini del' onclick='del(" . $row["id"] . ")'>X</button><button class='mini edit' onclick='edit(" . $row["id"] . ")'>Edit</button></td>";
             $dataresult .= "</tr>";
         }
         echo $dataresult;
