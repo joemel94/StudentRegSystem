@@ -10,7 +10,7 @@ window.onload = function(){ // Run after everything loads up
     units = $("units");
     total = $("total");
     dbTable = $("dbTable");
-
+    search = document.getElementsByClassName("search")[0];
 
     // Get Modal
     modal = $("myModal");
@@ -34,11 +34,16 @@ window.onload = function(){ // Run after everything loads up
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
-            getData();
+            getData(1);
             modal.style.display = "none";
         }
     }
-    getData(); // update data table
+
+    search.onkeyup = function(){
+        searchdata();
+    }
+
+    getData(1); // update data table
 }
 
 function setupDB() { // create db if wala pa
@@ -106,7 +111,7 @@ function del(delID) { // Delete Student
             if (this.readyState == 4 && this.status == 200) {
                 alert("Student Deleted!");
                 data.innerHTML = ""; // delete sa DOM table; frontend
-                getData(); // fetch data para no need to refresh
+                getData(1); // fetch data para no need to refresh
             }
         };
         xhttp.open("GET", "functions.php?type=2&id="+delID, true); // delete sa database; backend
@@ -114,7 +119,7 @@ function del(delID) { // Delete Student
     }
 }
 
-function getData(){ // fetch all data in database; returned as table rows
+function getData(getdatatype){ // fetch all data in database; returned as table rows
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -122,8 +127,24 @@ function getData(){ // fetch all data in database; returned as table rows
         }
     };
     //type 1; functions.php line 16
-    xhttp.open("GET", "functions.php?type=1", true);
+    xhttp.open("GET", "functions.php?type=" + getdatatype, true);
     xhttp.send();
+}
+
+function searchdata(){
+    if(search.value.length < 1){
+        getData(1);
+    } else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                data.innerHTML = this.responseText; // show search result
+            }
+        };
+        // selectedID = line 69
+        xhttp.open("GET", "functions.php?type=4&query="+search.value, true);
+        xhttp.send();
+    }
 }
 
 function compute() { // compute tuition

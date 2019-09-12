@@ -22,6 +22,9 @@ switch($_REQUEST["type"]){ // types of connection; 0 -> add a student, 1 -> Show
     case 3:
         edit($conn, $tbname);
         break;
+    case 4:
+        search($conn, $tbname);
+        break;
     default:
 }
 
@@ -55,9 +58,18 @@ function edit($conn, $tbname){
     $conn->query($sql); // Edit Student
 }
 
+function search($conn, $tbname){
+    $query = $_REQUEST["query"];
+    $sql = "SELECT * FROM " . $tbname . " WHERE firstname LIKE '%" . $query . "%' OR middlename LIKE '%" . $query . "%' OR lastname LIKE '%" . $query . "%' OR email LIKE '%" . $query . "%'";
+    getdata($conn->query($sql)); // Search Student(s)
+}
+
 function show($conn, $tbname){
     $sql = "SELECT * FROM " . $tbname;
-    $result = $conn->query($sql);
+    getdata($conn->query($sql));
+}
+
+function getdata($result){
     if ($result->num_rows > 0) {
         // output data of each row
         $dataresult = "";

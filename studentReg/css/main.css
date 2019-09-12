@@ -163,9 +163,15 @@ border: 1px solid #888;
 width: 80%; /* Could be more or less, depending on screen size */
 }
 
+input.search {
+  width: 300px;
+  margin: 0;
+}
+
 table {
-  width: 100%; 
+  width: 100%;
   display: table;
+  margin-top: 30px;
 }
 
 thead {
